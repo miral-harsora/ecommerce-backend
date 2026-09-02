@@ -1,77 +1,42 @@
-# 🛒 E-Commerce Backend API
+# ecommerce_app
 
-This project provides a RESTful API for an e-commerce platform. It includes functionality for managing products, categories, shopping carts, and wishlists.
+A full-stack e-commerce application for browsing products, filtering collections, managing a cart and wishlist, and signing in to an account.
 
-It also includes the ShopSphere React frontend in `client/`. A production build is served by the Express app, so the repository can be deployed as one service.
+## Built with
 
-## 🚀 Features
+- React, Vite, Redux, and Tailwind CSS
+- Node.js and Express
+- MongoDB and Mongoose
 
-- Product listing and details
-- Category listing
-- Shopping cart functionality
-- Wishlist functionality
+## Frontend previews
 
-## 🛠️ Tech Stack
+<img src="client/src/assets/shopsphere-hero-v2.png" alt="ecommerce_app home page seasonal collection hero" width="100%" />
 
-- Node.js
-- Express.js
-- MongoDB (with Mongoose)
-- RESTful API 
+<p align="center">
+  <img src="client/src/assets/cart.png" alt="ecommerce_app add-to-cart graphic" width="280" />
+</p>
 
-## 📁 Folder Structure
+<img src="client/src/assets/banner1.png" alt="ecommerce_app shopping collection banner" width="100%" />
 
-/ecommerce-backend │ ├── controllers/ ├── models/ ├── routes/ ├── middlewares/ ├── config/ ├── utils/ ├── .env ├── server.js └── README.md
-
-## 📦 API Endpoints
-
-![Screenshot 2025-04-29 162408](https://github.com/user-attachments/assets/f2fba51c-8eaa-4c68-8807-39d94c42e0cc)
-
-
-📌 Setup Instructions
-Clone the repository:
-
-git clone https://github.com/yourusername/ecommerce-backend.git
-Navigate to the project folder:
-cd ecommerce-backend
-
-Install dependencies:
-npm install
-
-Set up .env file:
-PORT=3001
-MONGODBURL=mongodb+srv://<username>:<password>@<cluster-host>/<database>?retryWrites=true&w=majority
-CORS_ORIGIN=http://localhost:5173
-
-Run the server:
-npm run dev
-
-## Authentication
-
-The `/auth/signup` and `/auth/login` endpoints create accounts and return a signed bearer token. Passwords are stored as salted `scrypt` hashes and are never returned to the client. Set `JWT_SECRET` to a long random value in `.env` for deployed environments. The frontend stores the returned session locally, shows the signed-in customer in the navbar, and supports sign out.
-
-## Frontend development and production build
-
-Install frontend dependencies and run Vite in a second terminal:
+## Run locally
 
 ```bash
-npm --prefix client ci
+git clone https://github.com/miral-harsora/ecommerce_app.git
+cd ecommerce_app
+npm install
+npm --prefix client install
+```
+
+Create a `.env` file based on `.env.example`, add your MongoDB connection string and `JWT_SECRET`, then run:
+
+```bash
+npm run dev
+```
+
+In a second terminal, start the frontend:
+
+```bash
 npm run client:dev
 ```
 
-The Vite dev server proxies product, cart, and wishlist calls to the backend at `http://localhost:3001`. To create the production client bundle, run:
-
-```bash
-npm run build
-```
-
-After the build, `npm start` serves the React app and API from the same origin. The generated `client/dist` directory and dependency directories are intentionally not committed.
-
-## Recreate the product catalogue
-
-After configuring a new MongoDB Atlas connection, populate the `products` collection with:
-
-```bash
-npm run seed:products
-```
-
-The command downloads the public DummyJSON catalogue and upserts it by product ID. It does not delete existing products, carts, or wishlists.
+The API runs on `http://localhost:3001` and the frontend on `http://localhost:5173`.
