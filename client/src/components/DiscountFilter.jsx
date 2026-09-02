@@ -28,7 +28,7 @@ const DiscountFilter = ({ value, onChange }) => {
             />
             <div
     className="
-      w-4 h-4 peer-checked:bg-[#F7569B] peer-checked:rounded-full
+      w-4 h-4 peer-checked:bg-sphere-rose peer-checked:rounded-full
        peer-checked:opacity-100
       transition-opacity duration-200
      absolute z-2 mx-1
@@ -38,12 +38,12 @@ const DiscountFilter = ({ value, onChange }) => {
   className="relative 
     w-6 h-6 border-2 border-gray-400 rounded-full
     flex items-center justify-center
-    peer-checked:border-[#F7569B]
+    peer-checked:border-sphere-rose
   "
 >
 
 </div>
-            <span className="text-gray-700 peer-checked:text-[#F7569B] font-medium text-sm">{discount.label}</span>
+            <span className="text-gray-700 peer-checked:text-sphere-rose font-medium text-sm">{discount.label}</span>
           </label>
         ))}
       </div>

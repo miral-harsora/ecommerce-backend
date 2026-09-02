@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --color-sphere-ink: #2f1830;
+  --color-sphere-plum: #5b283d;
+  --color-sphere-rose: #b45061;
+  --color-sphere-coral: #f77a66;
+  --color-sphere-cream: #fcfaf8;
+  --color-sphere-line: #e9dfda;
+}
+
 @font-face {
   font-family: custom-font;
   src: url("./assets/fonts/AtkinsonHyperlegibleNext-Regular.ttf");
@@ -7,9 +16,22 @@
 }
 body {
   font-family: 'custom-font', sans-serif;
+  background: #fcfaf8;
+  color: #25151c;
 }
+html { scroll-behavior: smooth; }
+button, a, input, select, summary, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button, a, select, summary, input[type="submit"], input[type="button"], [role="button"], .cursor-pointer { cursor: pointer; }
+.brand-wordmark { display: inline-block; font-family: "Segoe Print", "Bradley Hand", "Brush Script MT", cursive; font-size: clamp(1.3rem, 1.8vw, 1.65rem); font-weight: 700; letter-spacing: -0.07em; line-height: 1; transform: translateY(-1px); }
+.site-page { min-height: calc(100vh - 18rem); }
+.content-page { max-width: 72rem; margin: 0 auto; padding: 3rem 1.5rem; }
+.surface-card { border: 1px solid var(--color-sphere-line); border-radius: 1rem; background: white; box-shadow: 0 10px 30px rgba(47, 24, 48, 0.06); }
+.btn-primary { background: var(--color-sphere-plum); color: white; border-radius: 0.75rem; font-weight: 600; transition: background .2s ease, transform .2s ease; }
+.btn-primary:hover { background: var(--color-sphere-rose); transform: translateY(-1px); }
+.btn-secondary { border: 1px solid var(--color-sphere-rose); color: var(--color-sphere-plum); border-radius: 0.75rem; font-weight: 600; transition: background .2s ease; }
+.btn-secondary:hover { background: #f9eef0; }
 .dropdown-menu {
-  border-top: 3px solid #F7569B;
+  border-top: 3px solid #b45061;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -19,6 +41,6 @@ body {
   cursor: pointer;
 }
 .dropdown-item:hover {
-  background-color: #F7569B;
+  background-color: #b45061;
   color: #fff;
 }

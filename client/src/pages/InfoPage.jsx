@@ -15,7 +15,7 @@ const pageContent = {
 
 const InfoPage = () => {
   const [title, intro, items] = pageContent[useLocation().pathname] || ["Information", "The requested page is not available.", []];
-  return <main className="max-w-4xl mx-auto px-6 py-10"><p className="text-sm text-gray-500"><Link className="hover:underline" to="/">Home</Link> / {title}</p><h1 className="mt-4 text-3xl font-bold">{title}</h1><p className="mt-4 text-gray-700">{intro}</p><ul className="mt-6 space-y-3 list-disc pl-5 text-gray-700">{items.map((item) => <li key={item}>{item}</li>)}</ul><Link className="inline-block mt-8 text-[#F7569B] font-semibold hover:underline" to="/contact">Contact ShopSphere Support</Link></main>;
+  return <main className="content-page"><div className="surface-card p-7 sm:p-10"><p className="text-sm text-stone-500"><Link className="hover:text-sphere-rose hover:underline" to="/">Home</Link> / {title}</p><h1 className="mt-4 text-3xl font-semibold tracking-tight text-sphere-ink">{title}</h1><p className="mt-4 leading-7 text-stone-600">{intro}</p><ul className="mt-6 space-y-3 list-disc pl-5 leading-7 text-stone-600">{items.map((item) => <li key={item}>{item}</li>)}</ul><Link className="inline-block mt-8 text-sphere-rose font-semibold hover:underline" to="/contact">Contact ShopSphere Support</Link></div></main>;
 };
 
 export default InfoPage;

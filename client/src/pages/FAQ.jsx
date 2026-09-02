@@ -32,13 +32,13 @@ const FAQ = ({navbarHeight}) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6" style={{paddingTop: `10px`}}>
-      <h1 className="text-4xl font-bold text-center mb-8">Frequently Asked Questions</h1>
+    <div className="content-page">
+      <p className="text-center text-xs font-semibold tracking-[0.18em] text-sphere-rose">HELP CENTRE</p><h1 className="mt-2 text-4xl font-semibold tracking-tight text-center mb-8">Frequently Asked Questions</h1>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
-          <div key={index} className="border border-gray-300 rounded-lg">
+          <div key={index} className="surface-card overflow-hidden">
             <button
-              className="w-full text-left p-4 flex justify-between items-center text-lg font-semibold"
+              className="w-full text-left p-5 flex justify-between items-center text-lg font-semibold hover:bg-[#fcfaf8]"
               onClick={() => toggleFAQ(index)}
             >
               {faq.question}
@@ -47,7 +47,7 @@ const FAQ = ({navbarHeight}) => {
               />
             </button>
             {openIndex === index && (
-              <div className="p-4 text-gray-700 border-t border-gray-300">{faq.answer}</div>
+              <div className="p-5 leading-7 text-stone-600 border-t border-sphere-line">{faq.answer}</div>
             )}
           </div>
         ))}

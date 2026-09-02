@@ -17,7 +17,7 @@ const Filter = ({ setPriceRange, setSelectedDiscount }) => {
         <div className="p-4 border-r-gray-300  ">
             <div className="flex justify-between items-center">
                 <p className="font-bold mx-2 text-xs">FILTERS</p>
-                <p className="text-[#F7569B] mx-2 cursor-pointer text-xs " onClick={handleClearFilters}>
+                <p className="text-sphere-rose mx-2 cursor-pointer text-xs " onClick={handleClearFilters}>
                     CLEAR ALL
                 </p>
             </div>

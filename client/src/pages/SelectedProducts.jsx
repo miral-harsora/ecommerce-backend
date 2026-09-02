@@ -267,7 +267,7 @@ const SelectedProducts = ({navbarHeight}) => {
                                                                     <span className='font-medium line-through mx-2'>
                                                                         ${((product.price * 100) / (100 - product.discountPercentage)).toFixed(2)}
                                                                     </span>
-                                                                    <span className='text-pink-300 mx-2'>
+                                                                    <span className='text-sphere-rose mx-2'>
                                                                         ({product.discountPercentage}% OFF)
                                                                     </span>
                                                                 </p>
@@ -313,7 +313,7 @@ const SelectedProducts = ({navbarHeight}) => {
                                                 <div className=" text-center mb-2 items-center my-4">
                                                     <p className="text-gray-400 text-sm">{product.category}</p>
                                                     <p className="text-ellipsis line-clamp-1 mx-1">{product.title}</p>
-                                                    <p className="text-sm  font-bold">${product.price}<span className='font-medium line-through mx-2'>${((product.price * 100) / (100 - product.discountPercentage)).toFixed(2)}</span><span className='text-pink-300 mx-2'>({product.discountPercentage}% OFF)</span></p>
+                                                    <p className="text-sm font-bold">${product.price}<span className='font-medium line-through mx-2'>${((product.price * 100) / (100 - product.discountPercentage)).toFixed(2)}</span><span className='text-sphere-rose mx-2'>({product.discountPercentage}% OFF)</span></p>
                                                     <div className='flex justify-center mb-4'>
                                                         {(product.rating > 4 && product.rating < 5) ? (
                                                             <div className='flex justify-center mb-4'>

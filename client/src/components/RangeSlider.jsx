@@ -17,12 +17,12 @@ export default function RangeSlider({ value, onChange }) {
       },
       margin: '20px auto',
       padding: '10px',
-      color: '#F7569B',      // Primary color
+      color: '#b45061',      // Primary color
         '& .MuiSlider-thumb': {
-          backgroundColor: '#F7569B' // Thumb color
+          backgroundColor: '#b45061' // Thumb color
         },
         '& .MuiSlider-track': {
-          backgroundColor: '#F7569B' // Track color
+          backgroundColor: '#b45061' // Track color
         },
         '& .MuiSlider-rail': {
           backgroundColor: 'gray' // Rail (inactive track) color

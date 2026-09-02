@@ -45,6 +45,10 @@ CORS_ORIGIN=http://localhost:5173
 Run the server:
 npm run dev
 
+## Authentication
+
+The `/auth/signup` and `/auth/login` endpoints create accounts and return a signed bearer token. Passwords are stored as salted `scrypt` hashes and are never returned to the client. Set `JWT_SECRET` to a long random value in `.env` for deployed environments. The frontend stores the returned session locally, shows the signed-in customer in the navbar, and supports sign out.
+
 ## Frontend development and production build
 
 Install frontend dependencies and run Vite in a second terminal:

@@ -8,6 +8,7 @@ const dbConnection = require("./config/dbConfig");
 const productRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
 const wishlistRoutes = require("./routes/wishlist");
+const authRoutes = require("./routes/auth");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerui = require("swagger-ui-express");
 const options = require("./swagger/swagger");
@@ -32,6 +33,7 @@ app.use(express.json())
 app.use("/products",productRoutes)
 app.use("/cart",cartRoutes)
 app.use("/wishlist",wishlistRoutes)
+app.use("/auth", authRoutes)
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", database: "connected" });
 });

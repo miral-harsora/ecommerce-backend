@@ -1,57 +1,12 @@
-import React, { useEffect } from 'react';
-import Banner from '../components/Banner';
-import Products from '../components/Products';
-import { MdOutlineLocalShipping, MdOutlineContactSupport } from "react-icons/md";
-import { FaRegCircleCheck } from 'react-icons/fa6';
-import { RiSecurePaymentLine } from 'react-icons/ri'
-const Home = ({navbarHeight}) => {
-    return (
-        <>
-        <Banner navbarHeight={navbarHeight }/>
-        <div className='flex justify-center'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 my-4 text-center '>
-            
-            {/* Easy Exchange */}
-            <div className='flex items-center '>
-                <MdOutlineLocalShipping size={40} className='text-pink-500' />
-                <div className='ms-2 text-left'>
-                    <p className='font-medium'>Easy Exchange</p>
-                    <p className='text-gray-500 text-sm mt-1'>We make returns effortless</p>
-                </div>
-            </div>
-    
-            {/* Secure Payments */}
-            <div className='flex items-center '>
-                <RiSecurePaymentLine size={40} className='text-pink-500' />
-                <div className='ms-2 text-left'>
-                    <p className='font-medium'>Secure Payments</p>
-                    <p className='text-gray-500 text-sm mt-1'>Your transactions are 100% safe.</p>
-                </div>
-            </div>
-    
-            {/* Assured Quality */}
-            <div className='flex items-center '>
-                <FaRegCircleCheck size={36} className='text-pink-500' />
-                <div className='ms-2 text-left'>
-                    <p className='font-medium'>Assured Quality</p>
-                    <p className='text-gray-500 text-sm mt-1'>We meet the highest standards.</p>
-                </div>
-            </div>
-    
-            {/* Online Support */}
-            <div className='flex items-center '>
-                <MdOutlineContactSupport size={36} className='text-pink-500' />
-                <div className='ms-2 text-left'>
-                    <p className='font-medium'>Online Support</p>
-                    <p className='text-gray-500 text-sm mt-1'>24/7 Dedicated Support</p>
-                </div>
-            </div>
-        </div>
-        </div>
-        <Products />
-    </>
-    
-    );
-};
+import Banner from "../components/Banner";
+import Products from "../components/Products";
+import Newsletter from "../components/Newsletter";
+import RecentlyViewed from "../components/RecentlyViewed";
+import { MdOutlineContactSupport, MdOutlineLocalShipping } from "react-icons/md";
+import { FiRotateCcw, FiShield } from "react-icons/fi";
+
+const promises = [[MdOutlineLocalShipping, "Free shipping", "On orders over $50"], [FiRotateCcw, "Easy returns", "30 days to decide"], [FiShield, "Secure payment", "Protected checkout"], [MdOutlineContactSupport, "Human support", "Here when you need us"]];
+
+const Home = () => <><Banner /><section className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 py-6 sm:grid-cols-4 sm:px-6">{promises.map(([Icon, title, detail]) => <div key={title} className="flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4"><Icon className="shrink-0 text-[#b45061]" size={25} /><div><p className="text-sm font-semibold">{title}</p><p className="mt-0.5 text-xs text-stone-500">{detail}</p></div></div>)}</section><section id="featured-products" className="scroll-mt-24 bg-[#fcfaf8] py-10"><div className="mx-auto max-w-7xl px-4 sm:px-6"><p className="text-xs font-semibold tracking-[0.18em] text-[#b45061]">SHOP THE EDIT</p><div className="mt-2 flex flex-wrap items-end justify-between gap-3"><h2 className="text-3xl font-semibold tracking-tight">Trending right now</h2><p className="max-w-sm text-sm leading-6 text-stone-500">Explore customer favorites, chosen for their style and everyday usefulness.</p></div></div><Products /></section><RecentlyViewed /><Newsletter /></>;
 
 export default Home;

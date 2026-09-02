@@ -23,6 +23,15 @@ const ProductDetail = ({navbarHeight}) => {
         setProd(product)
         checkWL(product ? product.id : null)
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+        if (product) {
+            try {
+                const recent = JSON.parse(localStorage.getItem("shopsphere-recently-viewed") || "[]");
+                const next = [product, ...recent.filter((item) => item.id !== product.id)].slice(0, 4);
+                localStorage.setItem("shopsphere-recently-viewed", JSON.stringify(next));
+            } catch {
+                // Storage is optional; product details remain available if disabled.
+            }
+        }
     }, [product])
     const calPercentage = (len) => {
         const per = (Math.floor((len / (product ? product.reviews.length : 0)) * 100))
@@ -116,7 +125,7 @@ const ProductDetail = ({navbarHeight}) => {
                                 <div className='flex sm:flex-col md:flex-col lg:flex-col items-center mt-2'>
                                     {product.images.map((img) => (
 
-                                        <img src={img} alt={product.title} width={75} className={`border-[1px]  p-2 mb-1 mx-2 bg-gray-200 ${img == selectedImg ? 'border-[#F7569B]' : 'border-gray-200'}`} onClick={() => setSelectedImg(img)} />
+                                        <img src={img} alt={product.title} width={75} className={`border-[1px] p-2 mb-1 mx-2 bg-gray-100 rounded-lg ${img == selectedImg ? 'border-sphere-rose' : 'border-sphere-line'}`} onClick={() => setSelectedImg(img)} />
                                     ))}
                                     {/* <img src={product.thumbnail} alt={product.title} width={75} className='border-[1px] border-gray-200 p-2 my-1 mx-2 bg-gray-200'/> */}
                                 </div>
@@ -125,7 +134,7 @@ const ProductDetail = ({navbarHeight}) => {
                                 <div className='flex sm:flex-col md:flex-col lg:flex-col items-center'>
                                     {product.images.map((img) => (
 
-                                        <img src={img} alt={product.title} width={75} className={`border-[1px]  p-2 mb-1 mx-2 bg-gray-200 ${img == selectedImg ? 'border-[#F7569B]' : 'border-gray-200'}`} onClick={() => setSelectedImg(img)} />
+                                        <img src={img} alt={product.title} width={75} className={`border-[1px] p-2 mb-1 mx-2 bg-gray-100 rounded-lg ${img == selectedImg ? 'border-sphere-rose' : 'border-sphere-line'}`} onClick={() => setSelectedImg(img)} />
                                     ))}
                                     {/* <img src={product.thumbnail} alt={product.title} width={75} className='border-[1px] border-gray-200 p-2 my-1 mx-2 bg-gray-200'/> */}
                                 </div>
@@ -189,8 +198,8 @@ const ProductDetail = ({navbarHeight}) => {
                                         <div className='border-[1px] border-gray-300 flex mx-8'><button className='ms-1 me-8 text-gray-500' data-testid="minus" onClick={minus}>-</button><p data-testid="quantity" className='mx-2'>{quantity}</p><button className='ms-8 me-1 text-gray-500' data-testid="plus" onClick={Plus}>+</button></div>
                                     </div>
                                     <div className='flex my-4'>
-                                        <button className='bg-[#F7569B] px-8 rounded text-white flex justify-center items-center font-bold ' data-testid="cart" onClick={addtocart}><MdOutlineShoppingCart className={`mx-2  ${added.includes("ADD") ? 'visible' : 'hidden'} `} /> {added}</button>
-                                        <button className='border-[1px] border-gray-500 mx-4 p-2 rounded mx-2 px-8 rounded flex justify-center items-center font-bold' data-testid="wishlist" onClick={addToWishList}>{wishlisted ? (<><IoMdHeart className='mx-2' style={{ color: "red" }} /> WISHLISTED</>) : (<><IoMdHeartEmpty className='mx-2' /> WISHLIST</>)}</button>
+                                        <button className='btn-primary px-8 py-3 flex justify-center items-center' data-testid="cart" onClick={addtocart}><MdOutlineShoppingCart className={`mx-2 ${added.includes("ADD") ? 'visible' : 'hidden'} `} /> {added}</button>
+                                        <button className='btn-secondary mx-4 p-3 px-8 flex justify-center items-center' data-testid="wishlist" onClick={addToWishList}>{wishlisted ? (<><IoMdHeart className='mx-2 text-sphere-rose' /> WISHLISTED</>) : (<><IoMdHeartEmpty className='mx-2' /> WISHLIST</>)}</button>
                                     </div>
                                     <hr className='my-2 border-gray-300' />
                                     <p className='font-bold'>PRODUCT DETAILS </p>

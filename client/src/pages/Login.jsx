@@ -1,143 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { emailRegex, passwordRegex } from '../helper/Regex';
-import { useNavigate } from 'react-router-dom';
-const Login = ({navbarHeight}) => {
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [error, setError] = useState({ emailError: "", passwordError: "" })
-    const [isSubmit, setIsSubmit] = useState(false)
-    const [formValid, setFormValid] = useState(false)
-    const [message, setMessage] = useState()
-    const [showAlert, setShowAlert] = useState(false);
-    const navigate = useNavigate()
-    useEffect(() => {
-        if (isSubmit) {
-            setShowAlert(true);
-            const timer = setTimeout(() => {
-                setShowAlert(false);
-            }, 3000);
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../api";
+import { saveAuth } from "../helper/authStorage";
+import { emailRegex, passwordRegex } from "../helper/Regex";
 
-            return () => clearTimeout(timer);
-        }
-    }, [isSubmit]);
-    const validate = (e) => {
-        if (e.target.id == "email") {
-            console.log(e.target.value)
-            handleEmail(e.target.value)
-        } else if (e.target.id == "password") {
-            handlePassword(e.target.value)
-        }
-    }
-    const handleEmail = (email) => {
-        let err = error.emailError;
-        let isValid = formValid
-        if (email.trim() === "") {
-            err = "This is required!"
-            isValid = false;
-        } else if (!emailRegex.test(email)) {
-            err = "Enter a valid email"
-            isValid = false;
-        } else {
-            err = ""
-            isValid = true;
-        }
-        setError({ ...error, emailError: err })
-        setFormValid(isValid)
-        setEmail(email)
-        return isValid
-    }
-    const handlePassword = (password) => {
-        let err = error.passwordError;
-        let isValid = formValid
-        if (password.trim() === "") {
-            err = "This is required!"
-            isValid = false;
-        } else if (password.trim().length < 8) {
-            err = "Enter atleast 8 characters including uppercase,lowercase and a special character!"
-            isValid = false;
-        } else if (!passwordRegex.test(password)) {
-            err = "Enter a valid password"
-            isValid = false;
-        } else {
-            err = ""
-            isValid = true;
-        }
-        setError({ ...error, passwordError: err })
-        setFormValid(isValid)
-        setPassword(password)
-        return isValid
-    }
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (handleEmail(email) && handlePassword(password)) {
-            setEmail("")
-            setPassword("")
-            setFormValid(false)
-            //setError({fnError:"",lnError:"",emailError:"",contactError:"",passwordError:""})
-            setMessage("Account created successfully!")
-            //navigate("/")
-        }
-        else {
-            setMessage("Please enter correct details!")
-        }
-        setIsSubmit(true)
-
-    }
-    return (
-        <>
-            <div className="bg-gray-100 h-screen" >
-
-                {showAlert && (
-                    <div
-                        className={`p-4 mb-4 text-sm text-green-800  ${message.includes("successfully") ? 'bg-green-50' : 'bg-red-50'}`}
-                        role="alert"
-                    >
-                        <span className="font-medium">{message.includes("successfully") ? "Success alert!" : ""} </span>
-                        {message}
-                    </div>)}
-                <div className='flex items-center justify-center min-h-screen bg-gray-100'>
-                    <div className='w-full max-w-md p-6 bg-white rounded shadow-md'>
-                        <div className='flex flex-col justify-center items-center'>
-                            <form onSubmit={(e) => handleSubmit(e)} className='w-full'>
-                                <div className='flex flex-col p-4 bg-white rounded'>
-                                    <p className='font-bold text-2xl text-center mb-4'>
-                                        Connect with Us – Login | Sign Up
-                                    </p>
-
-                                    <label htmlFor='email' className='my-2'>Email</label>
-                                    <input
-                                        type='email'
-                                        id='email'
-                                        placeholder='Enter your email'
-                                        className='border-[1px] border-gray-300 p-2 rounded w-full'
-                                        onChange={(e) => validate(e)}
-                                        value={email}
-                                    />
-                                    <p className='text-red-300'>{error.emailError}</p>
-
-                                    <label htmlFor='password' className='my-2'>Password</label>
-                                    <input
-                                        type='password'
-                                        id='password'
-                                        placeholder='Enter your password'
-                                        className='border-[1px] border-gray-300 p-2 rounded w-full'
-                                        onChange={(e) => validate(e)}
-                                        value={password}
-                                    />
-                                    <p className='text-red-300 w-full'>{error.passwordError}</p>
-
-                                    <button
-                                        className='bg-[#F7569B] w-full p-2 my-2 rounded text-white'>
-                                        Submit
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+const Login = () => {
+  const [mode, setMode] = useState("login");
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  const submit = async (event) => {
+    event.preventDefault(); setError(""); setMessage("");
+    if (mode === "signup" && form.name.trim().length < 2) return setError("Please enter your name.");
+    if (!emailRegex.test(form.email)) return setError("Please enter a valid email.");
+    if (!passwordRegex.test(form.password)) return setError("Use 8+ characters with uppercase, lowercase, number, and symbol.");
+    setLoading(true);
+    try {
+      const response = await api.post(`/auth/${mode}`, form);
+      saveAuth(response.data); setMessage(mode === "signup" ? "Account created — welcome to ShopSphere." : "Welcome back.");
+      setTimeout(() => navigate("/"), 500);
+    } catch (requestError) { setError(requestError.response?.data?.error || "Something went wrong. Please try again."); }
+    finally { setLoading(false); }
+  };
+  return <main className="min-h-[75vh] bg-[#fcfaf8] px-4 py-12"><div className="mx-auto w-full max-w-md surface-card p-7 sm:p-9"><div className="mb-7 text-center"><p className="text-xs font-semibold tracking-[0.2em] text-sphere-rose">YOUR SHOPSPHERE ACCOUNT</p><h1 className="mt-3 text-3xl font-semibold tracking-tight text-sphere-ink">{mode === "login" ? "Welcome back" : "Create your account"}</h1><p className="mt-2 text-sm text-stone-500">{mode === "login" ? "Sign in to keep your favourites and cart close." : "Join for a more personal shopping experience."}</p></div><form onSubmit={submit} className="space-y-4" noValidate>{mode === "signup" && <div><label htmlFor="name" className="mb-1 block text-sm font-medium">Full name</label><input id="name" name="name" value={form.name} onChange={update} autoComplete="name" className="w-full rounded-xl border border-sphere-line p-3 outline-none focus:border-sphere-rose" placeholder="Alex Morgan" /></div>}<div><label htmlFor="email" className="mb-1 block text-sm font-medium">Email address</label><input id="email" name="email" type="email" value={form.email} onChange={update} autoComplete="email" className="w-full rounded-xl border border-sphere-line p-3 outline-none focus:border-sphere-rose" placeholder="you@example.com" /></div><div><label htmlFor="password" className="mb-1 block text-sm font-medium">Password</label><input id="password" name="password" type="password" value={form.password} onChange={update} autoComplete={mode === "login" ? "current-password" : "new-password"} className="w-full rounded-xl border border-sphere-line p-3 outline-none focus:border-sphere-rose" placeholder="••••••••" /><p className="mt-1 text-xs text-stone-500">8+ chars, uppercase, lowercase, number and symbol.</p></div>{error && <p className="rounded-lg bg-[#fff0ed] p-3 text-sm text-sphere-rose" role="alert">{error}</p>}{message && <p className="rounded-lg bg-[#edf7f0] p-3 text-sm text-green-700" role="status">{message}</p>}<button disabled={loading} className="btn-primary w-full p-3 disabled:cursor-not-allowed disabled:opacity-60">{loading ? "Please wait…" : mode === "login" ? "Sign in" : "Create account"}</button></form><p className="mt-6 text-center text-sm text-stone-500">{mode === "login" ? "New to ShopSphere?" : "Already have an account?"} <button type="button" className="font-semibold text-sphere-rose hover:underline" onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(""); setMessage(""); }}>{mode === "login" ? "Create an account" : "Sign in"}</button></p></div></main>;
 };
 
 export default Login;

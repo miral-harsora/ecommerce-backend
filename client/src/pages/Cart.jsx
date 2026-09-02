@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ShopSphere from '../assets/ShopSphere_logo.png'
+import Brand from '../components/Brand'
 import cartImg from '../assets/cart.png'
 import { GrSecure } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
@@ -141,7 +141,7 @@ const Cart = () => {
         <>
             <div className='flex justify-between items-center'>
                 <div className='flex justify-start '>
-                    <Link to="/">  <img src={ShopSphere} width={120} /></Link>
+                    <Link to="/" aria-label="ShopSphere home"><Brand /></Link>
                 </div>
                 <div className='flex justify-center items-center text-gray-500 text-xs sm:text-sm md:text-base lg:text-base '>
                     <p className='mx-2 font-bold'>CART</p> / <p className='mx-2'>ADDRESS</p> / <p className='mx-2'>PAYMENT</p>
@@ -167,9 +167,9 @@ const Cart = () => {
                 <div className='flex flex-col sm:flex-row md:flex-row lg:flex-row   min-lg:mx-64'>
                     <div className='min-sm:w-[75%] mx-4 mt-4'>
                         <div className='flex flex-col'>
-                            <div className=' flex justify-between items-center bg-[#F7569B80] py-4 px-2'>
+                            <div className='flex justify-between items-center rounded-xl bg-[#f5ded7] py-4 px-3'>
                                 <p className='flex justify-start'>Check delivery time and services</p>
-                                <button className='flex justify-end border-[1px] border-red-500 rounded text-xs text-red-500 p-2'>ENTER PIN CODE</button>
+                                <button className='btn-secondary flex justify-end text-xs p-2'>ENTER PIN CODE</button>
                             </div>
                             <div className='hidden sm:flex md:flex lg:flex  text-gray-500 w-full'>
                                 <p className='w-[40%]'>Product</p>
@@ -238,15 +238,15 @@ const Cart = () => {
                                     <p className='mx-2'>Apply Coupons</p>
 
                                 </div>
-                                <button className='border-[1px] border-red-500 text-red-500 text-xs p-2 rounded'>APPLY NOW</button>
+                                <button className='btn-secondary text-xs p-2'>APPLY NOW</button>
                             </div>
-                            <p className='mx-6'><Link to="/login" className='text-red-500'>Login</Link> to get upto 5% OFF on first order</p>
+                            <p className='mx-6'><Link to="/login" className='text-sphere-rose'>Login</Link> to get upto 5% OFF on first order</p>
                             <hr className='border-gray-200 my-2 ' />
                             <p className='font-bold text-sm'>Cart Total</p>
                             <hr className='border-gray-200 my-2 ' />
                             <div className='flex justify-between items-center'>
                                 <p>Subtotal:</p>
-                                <p className='text-red-500'>${getTotalPrice()}</p>
+                                <p className='text-sphere-rose'>${getTotalPrice()}</p>
                             </div>
                             <hr className='border-gray-200 my-2 ' />
                             <p>Shipping:</p>
@@ -348,13 +348,13 @@ const Cart = () => {
                                 </div>
                             </div>
                             <hr className='border-gray-200 my-2 ' />
-                            <div className='flex justify-between items-center text-red-500'>
+                            <div className='flex justify-between items-center text-sphere-rose'>
                                 <p>Total:</p>
-                                <p className='text-red-500'>${final()}</p>
+                                <p className='text-sphere-rose'>${final()}</p>
                             </div>
-                            <button className='bg-[#F7569B] p-2 text-white font-bold text-sm mt-2 rounded'>PROCEED TO CHECKOUT</button>
+                            <button className='btn-primary p-3 text-sm mt-2'>PROCEED TO CHECKOUT</button>
                         </div>
-                        <button className='border-[1px] border-[#F7569B] p-2 text-[#F7569B] rounded font-bold text-sm mt-2 w-full'>CONTINUE SHOPPING</button>
+                        <Link to="/" className='btn-secondary block p-3 text-center text-sm mt-2 w-full'>CONTINUE SHOPPING</Link>
                     </div>
                 </div>
                 : <div className='w-full h-screen flex flex-col justify-center items-center'><img width={200} src={cartImg}></img><p>Cart is Empty. Lets add some items.</p></div>}

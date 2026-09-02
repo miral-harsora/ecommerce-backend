@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import ShopSphere from '../assets/ShopSphere_logo.png'
-import ShopSphere_initial from '../assets/ShopSphere_initial.png'
+import Brand from './Brand'
 import { FaSearch, FaChevronDown, FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 import { MdMenu, MdOutlineShoppingCart } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -8,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCart, getCategories, getCategorizedProducts, getWishlist, searchProd } from '../action';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cartImg from "../assets/cart.png"
+import { clearAuth, getAuth } from "../helper/authStorage";
 import { useRef } from 'react';
 const Navbar = ({ setNavbarHeight }) => {
   const megaMenuData = {
@@ -47,6 +47,7 @@ const Navbar = ({ setNavbarHeight }) => {
   const getFilteredCategories = (prefix) => cat.filter((category) => category.startsWith(prefix));
   const [cartNum, setCartNum] = useState(0)
   const [wlNum, setwlNum] = useState(0)
+  const [auth, setAuth] = useState(() => getAuth());
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategories());
@@ -61,6 +62,7 @@ const Navbar = ({ setNavbarHeight }) => {
   const categories = useSelector(state => state.categories);
   const [cat, setCat] = useState([]);
   const navigate = useNavigate();
+  const signOut = () => { clearAuth(); navigate("/"); };
   const onCategory = (val, num) => {
     console.log("selected category " + val)
     toggleMenu()
@@ -89,6 +91,11 @@ const Navbar = ({ setNavbarHeight }) => {
   useEffect(() => {
     setwlNum(wishlist.length)
   }, [wishlist]);
+  useEffect(() => {
+    const syncAuth = () => setAuth(getAuth());
+    window.addEventListener("shopsphere-auth", syncAuth);
+    return () => window.removeEventListener("shopsphere-auth", syncAuth);
+  }, []);
   const desktopNavbarRef = useRef(null);
   const mobileNavbarRef = useRef(null);
   useEffect(() => {
@@ -112,22 +119,23 @@ const Navbar = ({ setNavbarHeight }) => {
       onMouseLeave={() => setIsDropdownOpen({ [dropId]: false })}
     >
       <div className="flex items-center h-full">
-        <button className="px-4 py-2 font-medium text-black hover:text-[#F7569B] transition">
-          {title}
+        <button className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${isDropdownOpen[dropId] ? "bg-[#f7f0ec] text-sphere-rose" : "text-sphere-ink hover:bg-[#f7f0ec] hover:text-sphere-rose"}`}>
+          {title}<FaChevronDown className={`text-[10px] transition-transform ${isDropdownOpen[dropId] ? "rotate-180" : ""}`} />
         </button>
       </div>
       {isDropdownOpen[dropId] && (
-        <div className="absolute left-0 top-full min-w-[40rem] bg-white border-t border-gray-200 shadow-lg z-40 py-6 rounded">
-          <div className="grid grid-cols-4 gap-8 px-8 text-sm text-gray-800">
+        <div className="absolute left-0 top-full z-40 min-w-[42rem] overflow-hidden rounded-b-2xl rounded-t-none border border-sphere-line bg-white shadow-[0_24px_55px_rgba(47,24,48,0.18)]">
+          <div className="border-b border-sphere-line bg-[#fcfaf8] px-7 py-4"><p className="text-xs font-semibold tracking-[0.18em] text-sphere-rose">EXPLORE {title.toUpperCase()}</p></div>
+          <div className="grid grid-cols-4 gap-3 p-5 text-sm text-stone-600">
             {Object.entries(megaMenuData[dataKey]).map(([heading, items]) => (
-              <div key={heading}>
-                <h4 className="font-bold text-black mb-3 items-center">{heading}</h4>
-                <ul className="space-y-2">
+              <div key={heading} className="rounded-xl p-3 transition hover:bg-[#f7f0ec]">
+                <h4 className="mb-3 text-xs font-bold tracking-[0.12em] text-sphere-plum">{heading.toUpperCase()}</h4>
+                <ul className="space-y-1.5">
                   {items.filter(item => categories.includes(item)).map(category => (
                     <li
                       key={category}
                       onClick={() => onCategory(category)}
-                      className="hover:text-[#F7569B] cursor-pointer"
+                      className="cursor-pointer rounded-lg px-2 py-1.5 capitalize transition hover:bg-white hover:text-sphere-rose hover:shadow-sm"
                     >
                       {category.replace(/mens-|womens-/, '').replace('-', ' ')}
                     </li>
@@ -156,7 +164,7 @@ const Navbar = ({ setNavbarHeight }) => {
               <li
                 key={cat}
 
-                className="px-4 py-2 hover:bg-[#F7569B] hover:text-white rounded transition-all duration-300 cursor-pointer"
+                className="px-4 py-2 hover:bg-sphere-plum hover:text-white rounded-xl transition-all duration-300 cursor-pointer"
                 onClick={() => onCategory(cat, val)}
 
               >
@@ -183,7 +191,7 @@ const Navbar = ({ setNavbarHeight }) => {
                 <li
                   key={cat}
 
-                  className=" py-2  px-2 w-full hover:bg-[#F7569B] hover:text-white rounded transition-all duration-300 cursor-pointer"
+                  className=" py-2 px-2 w-full hover:bg-sphere-plum hover:text-white rounded-xl transition-all duration-300 cursor-pointer"
                   onClick={() => onCategory(cat, val)}
 
                 >
@@ -198,15 +206,15 @@ const Navbar = ({ setNavbarHeight }) => {
   return (
     <>
       {/* Desktop View */}
-      <div ref={desktopNavbarRef} className="relative hidden min-xl:flex justify-between items-center shadow fixed top-0 z-50 w-full bg-white" data-testid="navbar">
-        <div className='flex justify-start'>
-          <Link to="/"> <img src={ShopSphere} width={120} /></Link>
+      <div ref={desktopNavbarRef} className="sticky top-0 z-50 hidden min-xl:flex min-h-[76px] w-full justify-between items-center border-b border-sphere-line bg-white/95 px-5 shadow-sm backdrop-blur" data-testid="navbar">
+        <div className='flex h-full items-center justify-start gap-7'>
+          <Link to="/" aria-label="ShopSphere home" className="shrink-0"><Brand /></Link>
           {/* <div
             className="relative group flex items-center mx-4"
             onMouseEnter={() => setIsDropdownOpen({ ...isDropdownOpen, [1]: true })}
             onMouseLeave={() => setIsDropdownOpen({ ...isDropdownOpen, [1]: false })}
           >
-            <button className="bg-white text-black px-4 py-2 hover:text-[#F7569B] transition-all duration-300">
+            <button className="bg-white text-black px-4 py-2 hover:text-sphere-rose transition-all duration-300">
               Men
             </button>
 
@@ -225,7 +233,7 @@ const Navbar = ({ setNavbarHeight }) => {
           <div className="relative group flex items-center mx-4 " onMouseEnter={() => setIsDropdownOpen({ ...isDropdownOpen, [2]: true })}
             onMouseLeave={() => setIsDropdownOpen({ ...isDropdownOpen, [2]: false })}>
           
-            <button className="bg-white text-black px-4 py-2 hover:text-[#F7569B] transition-all duration-300">
+            <button className="bg-white text-black px-4 py-2 hover:text-sphere-rose transition-all duration-300">
 
               Women
             </button>
@@ -244,7 +252,7 @@ const Navbar = ({ setNavbarHeight }) => {
           <div className="relative group flex items-center mx-4"  onMouseEnter={() => setIsDropdownOpen({ ...isDropdownOpen, [3]: true })}
             onMouseLeave={() => setIsDropdownOpen({ ...isDropdownOpen, [3]: false })}>
            
-            <button className="bg-white text-black px-4 py-2 hover:text-[#F7569B] transition-all duration-300">
+            <button className="bg-white text-black px-4 py-2 hover:text-sphere-rose transition-all duration-300">
               Beauty
             </button>
            
@@ -261,7 +269,7 @@ const Navbar = ({ setNavbarHeight }) => {
           <div className="relative group flex items-center mx-4"  onMouseEnter={() => setIsDropdownOpen({ ...isDropdownOpen, [4]: true })}
             onMouseLeave={() => setIsDropdownOpen({ ...isDropdownOpen, [4]: false })}>
           
-            <button className="bg-white text-black px-4 py-2 hover:text-[#F7569B] transition-all duration-300">
+            <button className="bg-white text-black px-4 py-2 hover:text-sphere-rose transition-all duration-300">
               Accessories
             </button>
             {isDropdownOpen[4] && (
@@ -276,7 +284,7 @@ const Navbar = ({ setNavbarHeight }) => {
           <div className="relative group flex items-center mx-4 "  onMouseEnter={() => setIsDropdownOpen({ ...isDropdownOpen, [5]: true })}
             onMouseLeave={() => setIsDropdownOpen({ ...isDropdownOpen, [5]: false })}>
            
-            <button className="bg-white text-black px-4 py-2 hover:text-[#F7569B] transition-all duration-300">
+            <button className="bg-white text-black px-4 py-2 hover:text-sphere-rose transition-all duration-300">
               Home Decor
             </button>
             {isDropdownOpen[5] && (
@@ -291,7 +299,7 @@ const Navbar = ({ setNavbarHeight }) => {
           <div className="relative group flex items-center mx-4 "  onMouseEnter={() => setIsDropdownOpen({ ...isDropdownOpen, [6]: true })}
             onMouseLeave={() => setIsDropdownOpen({ ...isDropdownOpen, [6]: false })}>
           
-            <button className="bg-white text-black px-4 py-2 hover:text-[#F7569B] transition-all duration-300">
+            <button className="bg-white text-black px-4 py-2 hover:text-sphere-rose transition-all duration-300">
               Electronics
             </button>
             {isDropdownOpen[6] && (
@@ -335,34 +343,34 @@ const Navbar = ({ setNavbarHeight }) => {
                     flex items-center 
                     pointer-events-none"
             >
-              <FaSearch className="m-1" style={{ color: "#F7569B" }} />
+              <FaSearch className="m-1 text-sphere-rose" />
             </div>
           </div>
         </div>
         <div className='flex justify-end items-center'>
-          <Link to="/login"><p className='font-bold mx-4' data-testid="login">Login / SignUp</p></Link>
-          <Link to="/cart"><div data-testid="cart" className={`w-4 h-4 bg-red-500 rounded-full border-4 border-red-500 absolute z-2 my-2 mx-8  flex items-center justify-center ${cartNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{cartNum}</p></div><MdOutlineShoppingCart className='mx-4' size={22} ></MdOutlineShoppingCart></Link>
-          <Link to="/wishlist"><div data-testid="wishlist_link" className={`w-4 h-4 bg-red-500 rounded-full border-4 border-red-500 absolute z-2 my-2 mx-8  flex items-center justify-center ${wlNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{wlNum}</p></div><IoMdHeartEmpty className='mx-4' size={22} /></Link>
+          {auth?.user ? <><span className='hidden 2xl:inline text-sm font-semibold text-sphere-plum'>Hi, {auth.user.name.split(" ")[0]}</span><button type="button" onClick={signOut} className='mx-3 text-sm font-semibold text-sphere-rose hover:underline'>Sign out</button></> : <Link to="/login"><p className='font-bold mx-4' data-testid="login">Login / SignUp</p></Link>}
+          <Link to="/cart"><div data-testid="cart" className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${cartNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{cartNum}</p></div><MdOutlineShoppingCart className='mx-4 text-sphere-plum' size={22} /></Link>
+          <Link to="/wishlist"><div data-testid="wishlist_link" className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${wlNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{wlNum}</p></div><IoMdHeartEmpty className='mx-4 text-sphere-plum' size={22} /></Link>
         </div>
       </div>
       {/* Mobile View */}
-      <div ref={mobileNavbarRef} className='flex flex-col py-2  min-xl:hidden  w-full  shadow fixed top-0 absolute z-5 w-full bg-white h-auto' >
-        <div className={`${isMenuOpen ? 'visible' : 'hidden'} fixed inset-0 flex bg-transparent absolute z-50`} onClick={toggleMenu}>
-          <div className="bg-white rounded-lg shadow-lg w-[45%]" onClick={(e) => e.stopPropagation()} >
+      <div ref={mobileNavbarRef} className='sticky top-0 z-50 flex flex-col py-3 min-xl:hidden w-full border-b border-sphere-line bg-white shadow-sm h-auto' >
+        <div className={`${isMenuOpen ? 'visible' : 'hidden'} fixed inset-0 z-50 flex bg-[#2f1830]/35 backdrop-blur-sm`} onClick={toggleMenu}>
+          <div className="h-full w-[85%] max-w-sm overflow-y-auto bg-[#fcfaf8] shadow-2xl" onClick={(e) => e.stopPropagation()} >
 
             <div className='flex flex-col'>
 
               {/* Header Banner */}
-              <div className='flex justify-between items-center bg-[#F7A8C4] p-2'>
+              <div className='flex justify-between items-center bg-[#f5ded7] p-4'>
                 <img src={cartImg} width={100} className='mx-2' />
                 <p className='text-xs min-sm:text-base  p-2'>
                   Hurry up! Flat 5% OFF on your first Order<br />
-                  <Link to="/login"><span className='text-red-500'> SIGN UP. LOGIN</span></Link>
+                  <Link to="/login"><span className='text-sphere-rose'> SIGN UP. LOGIN</span></Link>
                 </p>
               </div>
 
               {/* Category List */}
-              <div className='flex flex-col'>
+              <div className='flex flex-col gap-1 p-3'>
                 {[
                   { label: "Men", keywords: ["mens"] },
                   { label: "Women", keywords: ["womens", "tops"] },
@@ -373,13 +381,13 @@ const Navbar = ({ setNavbarHeight }) => {
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-start mx-4"
+                    className="flex flex-col items-start"
                     onClick={() => toggleDropdownSmall(index)}
                   >
                     {/* Dropdown Button */}
-                    <button className="bg-white text-black py-2 w-full">
+                    <button className={`w-full rounded-xl px-3 py-3 text-sphere-ink transition ${isDropdownOpen[index] ? "bg-white shadow-sm" : "hover:bg-white/70"}`}>
                       <div className='flex items-center justify-between'>
-                        <p>{item.label}</p>
+                        <p className='font-semibold'>{item.label}</p>
                         <FaChevronRight
                           className={`mx-2 transform transition-transform ${isDropdownOpen[index] ? "rotate-90" : "rotate-0"
                             }`}
@@ -389,8 +397,8 @@ const Navbar = ({ setNavbarHeight }) => {
 
                     {/* Dropdown Menu */}
                     {isDropdownOpen[index] && (
-                      <div className="overflow-hidden transition-all duration-300">
-                        <div className="w-full bg-white text-black py-4">
+                      <div className="w-full overflow-hidden transition-all duration-300">
+                        <div className="m-1 rounded-xl bg-white px-3 py-3 text-black shadow-sm">
                           <CategoryListSmall
                             keyword={item.keywords}
                             val={index}
@@ -405,14 +413,14 @@ const Navbar = ({ setNavbarHeight }) => {
             </div>
           </div>
         </div>
-        <div className='flex justify-between items-center shadow'>
+        <div className='flex min-h-[48px] justify-between items-center'>
           <div className='flex justify-start mx-2 items-center'>
-            <MdMenu size={24} onClick={toggleMenu} />
-            <Link to="/"><img src={ShopSphere_initial} width={40} className='p-2' /></Link>
+            <MdMenu className='text-sphere-plum' size={24} onClick={toggleMenu} />
+            <Link to="/" aria-label="ShopSphere home"><Brand /></Link>
           </div>
           <div className='flex justify-end items-center'>
-            <Link to="/cart"><div className={`w-4 h-4 bg-red-500 rounded-full border-4 border-red-500 absolute z-2 my-2 mx-8  flex items-center justify-center  ${cartNum > 0 ? 'visible' : 'hidden'}`}><p className="text-xs text-white font-bold">{cartNum}</p></div><MdOutlineShoppingCart className="mx-4" size={24}  ></MdOutlineShoppingCart></Link>
-            <Link to="/wishlist"><div className={`w-4 h-4 bg-red-500 rounded-full border-4 border-red-500 absolute z-2 my-2 mx-8  flex items-center justify-center  ${wlNum > 0 ? 'visible' : 'hidden'}`}><p className="text-xs text-white font-bold">{wlNum}</p></div><IoMdHeartEmpty className='mx-4' size={24} /></Link>
+            <Link to="/cart"><div className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${cartNum > 0 ? 'visible' : 'hidden'}`}><p className="text-xs text-white font-bold">{cartNum}</p></div><MdOutlineShoppingCart className="mx-4 text-sphere-plum" size={24} /></Link>
+            <Link to="/wishlist"><div className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${wlNum > 0 ? 'visible' : 'hidden'}`}><p className="text-xs text-white font-bold">{wlNum}</p></div><IoMdHeartEmpty className='mx-4 text-sphere-plum' size={24} /></Link>
           </div>
         </div>
         <div className='mx-auto flex justify-center items-center w-full'>
@@ -432,7 +440,7 @@ const Navbar = ({ setNavbarHeight }) => {
                     flex items-center 
                     pointer-events-none"
               >
-                <FaSearch className="m-1" style={{ color: "#F7569B" }} />
+                <FaSearch className="m-1 text-sphere-rose" />
               </div>
             </div>
           </div>

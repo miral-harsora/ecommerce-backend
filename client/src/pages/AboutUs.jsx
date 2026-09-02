@@ -11,12 +11,12 @@ const AboutUs = ({navbarHeight}) => {
         <div className='mx-4 text-gray-500'>
           <Link to="/"> Home</Link> / <span className='font-bold'>About Us</span>
         </div>
-        <div className='w-[75%]  flex items-center justify-center mx-auto'>
-          <img src={team} className='text-center' />
+        <div className='w-[75%] flex items-center justify-center mx-auto'>
+          <img src={team} className='rounded-3xl shadow-xl text-center' />
         </div>
 
         {/* Intro Section */}
-        <div className="bg-[#F7A8C4]  text-center py-8 px-4 mt-4">
+        <div className="bg-[#f5ded7] text-center py-10 px-4 mt-6">
           <h2 className="text-xl font-semibold">
             At ShopSphere, we bring you a world of style, convenience, and quality across every category you love.
           </h2>
@@ -26,7 +26,7 @@ const AboutUs = ({navbarHeight}) => {
         </div>
 
         {/* Two Column Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8 px-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-10 px-6 max-w-6xl mx-auto text-stone-600">
           <div>
             <h3 className="text-lg font-semibold">A Marketplace for All</h3>
             <p>
@@ -44,14 +44,14 @@ const AboutUs = ({navbarHeight}) => {
         </div>
 
         {/* Quote Section */}
-        <div className="bg-[#F7A8C4]  text-center py-8 px-6">
+        <div className="bg-[#2f1830] text-white text-center py-10 px-6">
           <p className="text-lg font-semibold">
             "Whatever you need, we’ve got it! At ShopSphere, we believe in quality, affordability, and a seamless shopping experience."
           </p>
         </div>
 
         {/* Four Column Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2  gap-8 py-8 px-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-10 px-6 max-w-6xl mx-auto text-stone-600">
           <div>
             <h3 className="text-lg font-semibold">Effortless Shopping</h3>
             <p>
@@ -77,7 +77,7 @@ const AboutUs = ({navbarHeight}) => {
             </p>
           </div>
         </div>
-        <div className='flex justify-center bg-gray-100'>
+        <div className='flex justify-center bg-[#f7f0ec]'>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 my-4 text-center '>
           <div className='flex flex-col items-center'>
             <MdOutlineLocalShipping size={48} />

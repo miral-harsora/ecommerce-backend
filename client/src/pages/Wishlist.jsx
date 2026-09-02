@@ -100,7 +100,7 @@ const Wishlist = ({ navbarHeight }) => {
                                                                 </div>
                                                             ) : (
                                                                 <div
-                                                                    className='border-[1px] border-red-500 flex items-center justify-center p-1 me-2 cursor-pointer hover:bg-gray-300 rounded'
+                                                                    className='btn-secondary flex items-center justify-center p-2 me-2 cursor-pointer'
                                                                     onClick={() => addtocart(item)}
                                                                 >
                                                                     <MdOutlineShoppingCart className='mx-2' /> ADD TO CART
@@ -127,7 +127,7 @@ const Wishlist = ({ navbarHeight }) => {
                                                         </div>
                                                         <p className='w-[20%] px-2'>${item.price}</p>
                                                         <p className={`w-[20%] px-8  ${item.availabilityStatus.includes("In") ? 'text-green-400' : item.availabilityStatus.includes("Low") ? 'text-orange-400' : 'text-red-400'}`}>{item.availabilityStatus}</p>
-                                                        <p className='w-[20%] '>{item.availabilityStatus.includes("Out") ? (<p className='text-gray-500 bg-gray-200 text-center '>OUT OF STOCK</p>) : <p className='border-[1px] border-red-500 flex items-center justify-center p-1 me-2 cursor-pointer rounded hover:bg-gray-300' onClick={() => addtocart(item)}><MdOutlineShoppingCart className='mx-2' /><p className='hidden sm:block md:block lg:block'> ADD TO CART</p></p>} </p>
+                                                        <p className='w-[20%] '>{item.availabilityStatus.includes("Out") ? (<p className='text-gray-500 bg-gray-200 text-center '>OUT OF STOCK</p>) : <p className='btn-secondary flex items-center justify-center p-2 me-2 cursor-pointer' onClick={() => addtocart(item)}><MdOutlineShoppingCart className='mx-2' /><span className='hidden sm:block md:block lg:block'> ADD TO CART</span></p>} </p>
                                                         <IoMdCloseCircle className="cursor-pointer" onClick={() => removeFromwl(item.id)} />
                                                     </div>
 
@@ -150,8 +150,8 @@ const Wishlist = ({ navbarHeight }) => {
                             </div>
                         </div>
                         : <div className='w-full h-screen flex flex-col justify-center items-center text-xl '><p className='w-1/2 sm:w-1/4 md:w-1/4 lg:w-1/4 text-center  text-gray-500'>Wishlist is Empty. Add items that you like to your wishlist. Review them anytime and easily move them to the cart.</p>
-                            <img src="https://static.vecteezy.com/system/resources/previews/018/868/628/original/3d-rendering-wishlist-shopping-free-png.png" style={{ color: "#F7569B" }} className='m-4' width={200} />
-                            <button className='border-[1px] border-red-500 text-red-500 rounded p-2'>CONTINUE SHOPPING</button>
+                            <img src="https://static.vecteezy.com/system/resources/previews/018/868/628/original/3d-rendering-wishlist-shopping-free-png.png" className='m-4' width={200} />
+                            <button className='btn-secondary p-3'>CONTINUE SHOPPING</button>
                         </div>}
                 </div>
             </div>
