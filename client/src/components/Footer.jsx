@@ -37,10 +37,10 @@ const Footer = () => (
     <div className="mx-auto flex max-w-7xl flex-col items-center justify-between text-sm text-stone-600 md:flex-row">
       <p>&copy; {new Date().getFullYear()} ShopSphere. All rights reserved.</p>
       <div className="flex gap-4 mt-2 md:mt-0" aria-label="Social media">
-        <a href="https://www.facebook.com/AlmaBetterOfficial" target="_blank" rel="noreferrer" aria-label="Facebook"><FaFacebookF size={20} /></a>
-        <a href="https://x.com/AlmaBetter" target="_blank" rel="noreferrer" aria-label="X"><FaXTwitter size={20} /></a>
-        <a href="https://www.instagram.com/almabetter/" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram size={20} /></a>
-        <a href="https://t.me/almabetterofficial" target="_blank" rel="noreferrer" aria-label="Telegram"><FaTelegram size={20} /></a>
+        <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook"><FaFacebookF size={20} /></a>
+        <a href="https://x.com/" target="_blank" rel="noreferrer" aria-label="X"><FaXTwitter size={20} /></a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram size={20} /></a>
+        <a href="https://telegram.org/" target="_blank" rel="noreferrer" aria-label="Telegram"><FaTelegram size={20} /></a>
       </div>
     </div>
   </footer>
