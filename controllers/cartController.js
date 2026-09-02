@@ -36,7 +36,7 @@ const addToCart = async (req, res) => {
 
         const product = await Cart.findOneAndUpdate(
             { id },
-            { $set: { ...req.body, id }, $setOnInsert: { quantity } },
+            { $set: { ...req.body, id, quantity } },
             { new: true, upsert: true, runValidators: true }
         );
         res.status(201).json({ message: "created", product });

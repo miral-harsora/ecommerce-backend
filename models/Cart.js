@@ -1,118 +1,13 @@
 const mongoose = require("mongoose");
 
-const cartSchema = new mongoose.Schema({
-  
-    id: { type: Number, required: true },
-    title:
+// Product fields come from the catalogue and may evolve. Keep the cart's own
+// contract small while retaining the complete product snapshot for display.
+const cartSchema = new mongoose.Schema(
     {
-        type: String,
-        required: true
+        id: { type: Number, required: true },
+        quantity: { type: Number, required: true, min: 1 },
     },
-    description:
-    {
-        type: String,
-        required: true
-    },
-    category:
-    {
-        type: String,
-        required: true
-    },
-    price:
-    {
-        type: Number,
-        required: true
-    },
-    discountPercentage:
-    {
-        type: String,
-        required: true
-    },
-    rating:
-    {
-        type: String,
-        required: true
-    },
-    stock:
-    {
-        type: Number,
-        required: true
-    },
-    tags:
-    {
-        type: Array,
-        required: true
-    },
-    brand:
-    {
-        type: String,
-        required: false
-    },
-    sku:
-    {
-        type: String,
-        required: true
-    },
-    weight:
-    {
-        type: Number,
-        required: true
-    },
-    dimensions:
-    {
-        type: Object,
-        required: true
-    },
-    warrantyInformation:
-    {
-        type: String,
-        required: true
-    },
-    shippingInformation:
-    {
-        type: String,
-        required: true
-    },
-    availabilityStatus:
-    {
-        type: String,
-        required: true
-    },
-    reviews:
-    {
-        type: Array,
-        required: true
-    },
-    returnPolicy:
-    {
-        type: String,
-        required: true
-    },
-    minimumOrderQuantity:
-    {
-        type: Number,
-        required: true
-    },
-    meta:
-    {
-        type: Object,
-        required: true
-    },
-    images:
-    {
-        type: Array,
-        required: true
-    },
-    thumbnail:
-    {
-        type: String,
-        required: true
-    },
-    quantity:{
-        type: Number,
-        required:true
-    }
-})
+    { strict: false, versionKey: false }
+);
 
-const cart = mongoose.model("cart",cartSchema)
-module.exports = cart;
+module.exports = mongoose.model("cart", cartSchema);
