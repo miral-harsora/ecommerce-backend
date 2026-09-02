@@ -1,6 +1,17 @@
 # ecommerce_app
 
-A full-stack e-commerce application for browsing products, filtering collections, managing a cart and wishlist, and signing in to an account.
+A full-stack e-commerce application with a responsive React storefront and a Node.js API. Customers can browse a product catalogue, refine results, view product details, save favourites, manage their cart, and sign in to an account.
+
+## Features
+
+- Browse a responsive, paginated product catalogue
+- Filter by category, price, discount, rating, and availability
+- Sort products by rating or price
+- View product images, prices, discounts, ratings, and details
+- Add products to a cart or wishlist
+- Sign up, sign in, and manage an account session
+- Explore supporting pages for shipping, returns, payments, FAQs, and contact details
+- Access API documentation at `/api-docs`
 
 ## Built with
 
@@ -8,15 +19,9 @@ A full-stack e-commerce application for browsing products, filtering collections
 - Node.js and Express
 - MongoDB and Mongoose
 
-## Frontend previews
+## Frontend snapshot
 
-<img src="client/src/assets/shopsphere-hero-v2.png" alt="ecommerce_app home page seasonal collection hero" width="100%" />
-
-<p align="center">
-  <img src="client/src/assets/cart.png" alt="ecommerce_app add-to-cart graphic" width="280" />
-</p>
-
-<img src="client/src/assets/banner1.png" alt="ecommerce_app shopping collection banner" width="100%" />
+![ecommerce_app storefront with product filters, catalogue, recent items, and newsletter](docs/screenshots/home-page.png)
 
 ## Run locally
 
@@ -40,3 +45,10 @@ npm run client:dev
 ```
 
 The API runs on `http://localhost:3001` and the frontend on `http://localhost:5173`.
+
+## Project structure
+
+- `client/` — React storefront
+- `controllers/`, `models/`, and `routes/` — Express API implementation
+- `middleware/` — authentication middleware
+- `scripts/seedProducts.js` — product catalogue seeding script
