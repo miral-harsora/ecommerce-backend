@@ -13,6 +13,7 @@ import AboutUs from './pages/AboutUs'
 import Contact from './pages/Contact'
 import FAQ from './pages/FAQ'
 import InfoPage from './pages/InfoPage'
+import Profile from './pages/Profile'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { getProducts } from './action'
@@ -45,6 +46,7 @@ function App() {
         <Route path="/cart" element={<Cart  />} />
         <Route path="/wishlist" element={<Wishlist   navbarHeight={navbarHeight}/>}/>
         <Route path="/login" element={<Login  navbarHeight={navbarHeight}/>} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/about" element={<AboutUs  navbarHeight={navbarHeight}/>} />
         <Route path="/contact" element={<Contact  navbarHeight={navbarHeight}/>} />
         <Route path="/faqs" element={<FAQ  navbarHeight={navbarHeight}/>} />

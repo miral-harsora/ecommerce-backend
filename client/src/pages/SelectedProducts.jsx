@@ -15,6 +15,9 @@ const SelectedProducts = ({navbarHeight}) => {
     const products = useSelector(state => state.filtered);
     const [priceRange, setPriceRange] = useState([1, 14000]);
     const [selectedDiscount, setSelectedDiscount] = useState("");
+    const [selectedRating, setSelectedRating] = useState(0);
+    const [inStockOnly, setInStockOnly] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [isFilterVisible, setIsFilterVisible] = useState(true);
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen)
@@ -106,11 +109,11 @@ const SelectedProducts = ({navbarHeight}) => {
         console.log("clicked " + val)
         setSelected(val)
         if (val == "Price: High to Low") {
-            filteredProducts.sort((a, b) => b.price - a.price)
+            setFilteredProducts([...filteredProducts].sort((a, b) => b.price - a.price))
         } else if (val == "Price: Low to High") {
-            filteredProducts.sort((a, b) => a.price - b.price)
+            setFilteredProducts([...filteredProducts].sort((a, b) => a.price - b.price))
         }else if(val=="Customer Rating"){
-            filteredProducts.sort((a, b) => b.rating - a.rating)
+            setFilteredProducts([...filteredProducts].sort((a, b) => b.rating - a.rating))
         }
 
     }
@@ -135,10 +138,13 @@ const SelectedProducts = ({navbarHeight}) => {
                                     ? product.discountPercentage > 15 && product.discountPercentage <= 20
                                     : true;
 
-            return inPriceRange && discountFilter;
+            const matchesRating = selectedRating === 0 || Number(product.rating) >= selectedRating;
+            const matchesStock = !inStockOnly || Number(product.stock) > 0;
+            const matchesCategory = !selectedCategory || product.category === selectedCategory;
+            return inPriceRange && discountFilter && matchesRating && matchesStock && matchesCategory;
         });
         setFilteredProducts(filtered);
-    }, [priceRange, selectedDiscount]);
+    }, [prod, priceRange, selectedDiscount, selectedRating, inStockOnly, selectedCategory]);
     const productCardVariants = {
         hidden: { opacity: 0, y: 50 },
         visible: { 
@@ -153,7 +159,7 @@ const SelectedProducts = ({navbarHeight}) => {
         boxShadow: "0 8px 15px rgba(0, 0, 0, 0.15)"
     };
     return (
-        <div className="mx-auto" style={{paddingTop: `${navbarHeight}px`}}>
+        <div className="mx-auto">
             <div className='flex flex-col md:flex-row'>
 
                 {/* Filter Toggle Button for Small Devices */}
@@ -170,6 +176,10 @@ const SelectedProducts = ({navbarHeight}) => {
                     <Productfilter
                         setPriceRange={setPriceRange}
                         setSelectedDiscount={setSelectedDiscount}
+                        setSelectedRating={setSelectedRating}
+                        setInStockOnly={setInStockOnly}
+                        setSelectedCategory={setSelectedCategory}
+                        categories={[...new Set(products.map((product) => product.category))].sort()}
                     />
                 </div>
 

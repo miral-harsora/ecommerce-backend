@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCart, getCategories, getCategorizedProducts, getWishlist, searchProd } from '../action';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cartImg from "../assets/cart.png"
-import { clearAuth, getAuth } from "../helper/authStorage";
+import { getAuth } from "../helper/authStorage";
 import { useRef } from 'react';
 const Navbar = ({ setNavbarHeight }) => {
   const megaMenuData = {
@@ -62,13 +62,13 @@ const Navbar = ({ setNavbarHeight }) => {
   const categories = useSelector(state => state.categories);
   const [cat, setCat] = useState([]);
   const navigate = useNavigate();
-  const signOut = () => { clearAuth(); navigate("/"); };
   const onCategory = (val, num) => {
     console.log("selected category " + val)
-    toggleMenu()
+    setIsMenuOpen(false)
+    setIsDropdownOpen({})
     dispatch(getCategorizedProducts(val))
     navigate(`/category/${val}`);
-    toggleDropdown(num)
+    if (num !== undefined) toggleDropdown(num)
   }
   const search = (e) => {
     console.log(e.target.value)
@@ -116,10 +116,9 @@ const Navbar = ({ setNavbarHeight }) => {
     <div
       className="relative group"
       onMouseEnter={() => setIsDropdownOpen({ [dropId]: true })}
-      onMouseLeave={() => setIsDropdownOpen({ [dropId]: false })}
     >
       <div className="flex items-center h-full">
-        <button className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${isDropdownOpen[dropId] ? "bg-[#f7f0ec] text-sphere-rose" : "text-sphere-ink hover:bg-[#f7f0ec] hover:text-sphere-rose"}`}>
+        <button type="button" onClick={() => setIsDropdownOpen((current) => current[dropId] ? {} : { [dropId]: true })} className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${isDropdownOpen[dropId] ? "bg-[#f7f0ec] text-sphere-rose" : "text-sphere-ink hover:bg-[#f7f0ec] hover:text-sphere-rose"}`}>
           {title}<FaChevronDown className={`text-[10px] transition-transform ${isDropdownOpen[dropId] ? "rotate-180" : ""}`} />
         </button>
       </div>
@@ -128,14 +127,14 @@ const Navbar = ({ setNavbarHeight }) => {
           <div className="border-b border-sphere-line bg-[#fcfaf8] px-7 py-4"><p className="text-xs font-semibold tracking-[0.18em] text-sphere-rose">EXPLORE {title.toUpperCase()}</p></div>
           <div className="grid grid-cols-4 gap-3 p-5 text-sm text-stone-600">
             {Object.entries(megaMenuData[dataKey]).map(([heading, items]) => (
-              <div key={heading} className="rounded-xl p-3 transition hover:bg-[#f7f0ec]">
-                <h4 className="mb-3 text-xs font-bold tracking-[0.12em] text-sphere-plum">{heading.toUpperCase()}</h4>
+              <div key={heading} className="rounded-xl p-3">
+                <button type="button" onClick={() => onCategory(items[0])} className="mb-3 inline-flex w-fit cursor-pointer items-center justify-center rounded-lg px-3 py-2 text-left text-xs font-bold tracking-[0.12em] text-sphere-plum transition hover:bg-[#f5ded7] hover:text-sphere-rose hover:shadow-sm">{heading.toUpperCase()}</button>
                 <ul className="space-y-1.5">
                   {items.filter(item => categories.includes(item)).map(category => (
                     <li
                       key={category}
                       onClick={() => onCategory(category)}
-                      className="cursor-pointer rounded-lg px-2 py-1.5 capitalize transition hover:bg-white hover:text-sphere-rose hover:shadow-sm"
+                      className="block w-fit cursor-pointer rounded-lg px-3 py-2 text-left capitalize transition hover:bg-[#f5ded7] hover:text-sphere-plum hover:shadow-sm"
                     >
                       {category.replace(/mens-|womens-/, '').replace('-', ' ')}
                     </li>
@@ -191,7 +190,7 @@ const Navbar = ({ setNavbarHeight }) => {
                 <li
                   key={cat}
 
-                  className=" py-2 px-2 w-full hover:bg-sphere-plum hover:text-white rounded-xl transition-all duration-300 cursor-pointer"
+                  className="block w-full cursor-pointer rounded-xl px-3 py-2 text-left capitalize transition-all duration-300 hover:bg-[#f5ded7] hover:text-sphere-plum"
                   onClick={() => onCategory(cat, val)}
 
                 >
@@ -348,7 +347,8 @@ const Navbar = ({ setNavbarHeight }) => {
           </div>
         </div>
         <div className='flex justify-end items-center'>
-          {auth?.user ? <><span className='hidden 2xl:inline text-sm font-semibold text-sphere-plum'>Hi, {auth.user.name.split(" ")[0]}</span><button type="button" onClick={signOut} className='mx-3 text-sm font-semibold text-sphere-rose hover:underline'>Sign out</button></> : <Link to="/login"><p className='font-bold mx-4' data-testid="login">Login / SignUp</p></Link>}
+          <Link to="/profile" className='mx-3 rounded-xl px-3 py-2 text-sm font-semibold text-sphere-plum transition hover:bg-[#f7f0ec]'>My profile</Link>
+          {!auth?.user && <Link to="/login"><p className='font-bold mx-4' data-testid="login">Login / SignUp</p></Link>}
           <Link to="/cart"><div data-testid="cart" className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${cartNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{cartNum}</p></div><MdOutlineShoppingCart className='mx-4 text-sphere-plum' size={22} /></Link>
           <Link to="/wishlist"><div data-testid="wishlist_link" className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${wlNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{wlNum}</p></div><IoMdHeartEmpty className='mx-4 text-sphere-plum' size={22} /></Link>
         </div>
@@ -364,8 +364,7 @@ const Navbar = ({ setNavbarHeight }) => {
               <div className='flex justify-between items-center bg-[#f5ded7] p-4'>
                 <img src={cartImg} width={100} className='mx-2' />
                 <p className='text-xs min-sm:text-base  p-2'>
-                  Hurry up! Flat 5% OFF on your first Order<br />
-                  <Link to="/login"><span className='text-sphere-rose'> SIGN UP. LOGIN</span></Link>
+                  {auth?.user ? <>Welcome back, {auth.user.name.split(" ")[0]}<br /><Link to="/profile"><span className='text-sphere-rose'>MY PROFILE</span></Link></> : <>Hurry up! Flat 5% OFF on your first Order<br /><Link to="/profile"><span className='text-sphere-rose'>MY PROFILE</span></Link><span className='mx-1 text-stone-400'>|</span><Link to="/login"><span className='text-sphere-rose'>SIGN IN</span></Link></>}
                 </p>
               </div>
 

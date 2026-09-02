@@ -29,7 +29,7 @@ const Footer = () => (
       </nav>
 
       <nav aria-label="My account"><p className="font-bold mb-2">My Account</p>
-        <Link className={footerLinkClass} to="/login">Sign In</Link><Link className={footerLinkClass} to="/cart">View Cart</Link>
+        <Link className={footerLinkClass} to="/profile">My Profile</Link><Link className={footerLinkClass} to="/cart">View Cart</Link>
         <Link className={footerLinkClass} to="/wishlist">My Wishlist</Link><Link className={footerLinkClass} to="/track-order">Track My Order</Link><Link className={footerLinkClass} to="/help">Help</Link>
       </nav>
     </div>
