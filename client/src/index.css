@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: custom-font;
+  src: url("./assets/fonts/AtkinsonHyperlegibleNext-Regular.ttf");
+  font-weight: normal;
+}
+body {
+  font-family: 'custom-font', sans-serif;
+}
+.dropdown-menu {
+  border-top: 3px solid #F7569B;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.dropdown-item {
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dropdown-item:hover {
+  background-color: #F7569B;
+  color: #fff;
+}

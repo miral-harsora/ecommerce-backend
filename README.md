@@ -2,6 +2,8 @@
 
 This project provides a RESTful API for an e-commerce platform. It includes functionality for managing products, categories, shopping carts, and wishlists.
 
+It also includes the ShopSphere React frontend in `client/`. A production build is served by the Express app, so the repository can be deployed as one service.
+
 ## 🚀 Features
 
 - Product listing and details
@@ -42,6 +44,23 @@ CORS_ORIGIN=http://localhost:5173
 
 Run the server:
 npm run dev
+
+## Frontend development and production build
+
+Install frontend dependencies and run Vite in a second terminal:
+
+```bash
+npm --prefix client ci
+npm run client:dev
+```
+
+The Vite dev server proxies product, cart, and wishlist calls to the backend at `http://localhost:3001`. To create the production client bundle, run:
+
+```bash
+npm run build
+```
+
+After the build, `npm start` serves the React app and API from the same origin. The generated `client/dist` directory and dependency directories are intentionally not committed.
 
 ## Recreate the product catalogue
 
