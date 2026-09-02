@@ -347,8 +347,11 @@ const Navbar = ({ setNavbarHeight }) => {
           </div>
         </div>
         <div className='flex justify-end items-center'>
-          <Link to="/profile" className='mx-3 rounded-xl px-3 py-2 text-sm font-semibold text-sphere-plum transition hover:bg-[#f7f0ec]'>My profile</Link>
-          {!auth?.user && <Link to="/login"><p className='font-bold mx-4' data-testid="login">Login / SignUp</p></Link>}
+          {auth?.user ? (
+            <Link to="/profile" className='mx-3 rounded-xl px-3 py-2 text-sm font-semibold text-sphere-plum transition hover:bg-[#f7f0ec]'>My profile</Link>
+          ) : (
+            <Link to="/login"><p className='font-bold mx-4' data-testid="login">Login / SignUp</p></Link>
+          )}
           <Link to="/cart"><div data-testid="cart" className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${cartNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{cartNum}</p></div><MdOutlineShoppingCart className='mx-4 text-sphere-plum' size={22} /></Link>
           <Link to="/wishlist"><div data-testid="wishlist_link" className={`w-4 h-4 bg-sphere-rose rounded-full border-4 border-sphere-rose absolute z-2 my-2 mx-8 flex items-center justify-center ${wlNum > 0 ? 'visible' : 'hidden'}`}><p className='text-xs text-white font-bold'>{wlNum}</p></div><IoMdHeartEmpty className='mx-4 text-sphere-plum' size={22} /></Link>
         </div>
@@ -364,7 +367,7 @@ const Navbar = ({ setNavbarHeight }) => {
               <div className='flex justify-between items-center bg-[#f5ded7] p-4'>
                 <img src={cartImg} width={100} className='mx-2' />
                 <p className='text-xs min-sm:text-base  p-2'>
-                  {auth?.user ? <>Welcome back, {auth.user.name.split(" ")[0]}<br /><Link to="/profile"><span className='text-sphere-rose'>MY PROFILE</span></Link></> : <>Hurry up! Flat 5% OFF on your first Order<br /><Link to="/profile"><span className='text-sphere-rose'>MY PROFILE</span></Link><span className='mx-1 text-stone-400'>|</span><Link to="/login"><span className='text-sphere-rose'>SIGN IN</span></Link></>}
+                  {auth?.user ? <>Welcome back, {auth.user.name.split(" ")[0]}<br /><Link to="/profile"><span className='text-sphere-rose'>MY PROFILE</span></Link></> : <>Hurry up! Flat 5% OFF on your first Order<br /><Link to="/login"><span className='text-sphere-rose'>SIGN IN</span></Link></>}
                 </p>
               </div>
 

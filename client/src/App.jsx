@@ -30,16 +30,18 @@ function App() {
   const dispatch= useDispatch();
   useEffect(() => {
        dispatch(getProducts());
-   }, [dispatch]);
+  }, [dispatch]);
   const location = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname]);
+
   const hideFooterRoutes = ['/login', '/cart']
-  const hideNavbarRoutes = ['/cart']
-  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
   const shouldHideFooter = hideFooterRoutes.includes(location.pathname);
   return (
     console.log("navbarHeight",navbarHeight),
     <>
-      {!shouldHideNavbar && <Navbar setNavbarHeight={setNavbarHeight}/>}
+      <Navbar setNavbarHeight={setNavbarHeight}/>
       <Routes>
         <Route path="/" element={<Home navbarHeight={navbarHeight}/>} />
         <Route path="/home" element={<Home navbarHeight={navbarHeight}/>} />

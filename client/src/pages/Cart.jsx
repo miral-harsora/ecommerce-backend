@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Brand from '../components/Brand'
 import cartImg from '../assets/cart.png'
-import { GrSecure } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { IoMdCloseCircle } from 'react-icons/io';
@@ -139,17 +137,6 @@ const Cart = () => {
     }
     return (
         <>
-            <div className='flex justify-between items-center'>
-                <div className='flex justify-start '>
-                    <Link to="/" aria-label="ShopSphere home"><Brand /></Link>
-                </div>
-                <div className='flex justify-center items-center text-gray-500 text-xs sm:text-sm md:text-base lg:text-base '>
-                    <p className='mx-2 font-bold'>CART</p> / <p className='mx-2'>ADDRESS</p> / <p className='mx-2'>PAYMENT</p>
-                </div>
-                <div className='flex justify-end items-center mx-4'>
-                    <GrSecure style={{ color: "green" }} size={24} /><p className='text-xs sm:text-sm md:text-base lg:text-base'>100% SECURE</p>
-                </div>
-            </div>
             {showAlert && (
                 <div
                     className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50"
