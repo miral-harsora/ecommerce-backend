@@ -37,7 +37,18 @@ npm install
 
 Set up .env file:
 PORT=3001
-MONGO_URI=your_mongodb_connection_string
+MONGODBURL=mongodb+srv://<username>:<password>@<cluster-host>/<database>?retryWrites=true&w=majority
+CORS_ORIGIN=http://localhost:5173
 
 Run the server:
 npm run dev
+
+## Recreate the product catalogue
+
+After configuring a new MongoDB Atlas connection, populate the `products` collection with:
+
+```bash
+npm run seed:products
+```
+
+The command downloads the public DummyJSON catalogue and upserts it by product ID. It does not delete existing products, carts, or wishlists.

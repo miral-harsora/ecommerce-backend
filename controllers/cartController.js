@@ -29,9 +29,17 @@ const Cart = require("../models/Cart")
  */
 const addToCart = async (req, res) => {
     try {
-        const product = new Cart(req.body);
-        await product.save()
-        res.status(201).json({ message: "created", product })
+        const { id, quantity = 1 } = req.body;
+        if (!Number.isFinite(id) || !Number.isFinite(quantity) || quantity < 1) {
+            return res.status(400).json({ error: "A numeric id and a positive quantity are required." });
+        }
+
+        const product = await Cart.findOneAndUpdate(
+            { id },
+            { $set: { ...req.body, id }, $setOnInsert: { quantity } },
+            { new: true, upsert: true, runValidators: true }
+        );
+        res.status(201).json({ message: "created", product });
     } catch (error) {
         res.status(500).json({ "error": error.message })
     }
@@ -56,7 +64,7 @@ const addToCart = async (req, res) => {
  */
 const getCart = async (req, res) => {
     try {
-        const result = await Cart.find().select({ _id: 0 })
+        const result = await Cart.find().select({ _id: 0, __v: 0 })
         // if (result.length==0) {
         //     return res.status(404).json({ error: "No products found in cart" })
         // }
@@ -103,11 +111,12 @@ const getCart = async (req, res) => {
 const updateCart = async(req,res)=>{
     try{
         const id = Number(req.params.id);
-        const result= await Cart.findOneAndUpdate({id},req.body)
+        if (!Number.isFinite(id)) return res.status(400).json({ error: "Invalid product id." });
+        const result = await Cart.findOneAndUpdate({ id }, req.body, { new: true, runValidators: true })
         if (!result) {
             return res.status(404).json({ error: "product not found!" });
         }
-        res.status(200).json({ message: "product updated successfully!","product":req.body })
+        res.status(200).json({ message: "product updated successfully!", product: result })
     } catch (error) {
         res.status(500).json({ "error": error.message })
     }
@@ -137,6 +146,7 @@ const updateCart = async(req,res)=>{
 const removeFromCart = async (req, res) => {
     try {
         const id = Number(req.params.id);
+        if (!Number.isFinite(id)) return res.status(400).json({ error: "Invalid product id." });
 
         const result = await Cart.findOneAndDelete({id});
         if (!result) {

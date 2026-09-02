@@ -29,9 +29,16 @@ const Wishlist = require("../models/Wishlist")
  */
 const addToWishlist=async(req,res)=>{
     try {
-        const product = new Wishlist(req.body);
-        await product.save()
-        res.status(201).json({ message: "created", product })
+        const { id } = req.body;
+        if (!Number.isFinite(id)) {
+            return res.status(400).json({ error: "A numeric id is required." });
+        }
+        const product = await Wishlist.findOneAndUpdate(
+            { id },
+            { $set: { ...req.body, id } },
+            { new: true, upsert: true, runValidators: true }
+        );
+        res.status(201).json({ message: "created", product });
     } catch (error) {
         res.status(500).json({ "error": error.message })
     }
@@ -57,7 +64,7 @@ const addToWishlist=async(req,res)=>{
  */
 const getWishlist=async(req,res)=>{
     try {
-        const result = await Wishlist.find().select({ _id: 0 })
+        const result = await Wishlist.find().select({ _id: 0, __v: 0 })
         // if (result.length==0) {
         //     return res.status(404).json({ error: "No products found in wishlist" })
         // }
@@ -91,6 +98,7 @@ const getWishlist=async(req,res)=>{
 const removeFromWishlist=async(req,res)=>{
     try {
         const id = Number(req.params.id);
+        if (!Number.isFinite(id)) return res.status(400).json({ error: "Invalid product id." });
 
         const result = await Wishlist.findOneAndDelete({id});
         if (!result) {
